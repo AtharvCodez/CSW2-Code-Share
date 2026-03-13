@@ -1,0 +1,40 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Django stuff
+db.sqlite3
+*.log
+
+# Static files (optional)
+staticfiles/
+
+# Media uploads
+media/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python build files
+build/
+dist/
+*.egg-info/
+
+# Migrations cache
+*.pyc
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
