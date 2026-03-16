@@ -3,7 +3,8 @@ from .models import Post
 from django.http import Http404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.mail import send_mail
-from .forms import EmailPostForm
+from .forms import EmailPostForm, CommentForm
+from django.views.decorators.http import require_POST
 
 
 def post_list(request):
@@ -85,3 +86,28 @@ def post_share(request, post_id):
             'sent': sent
         }
     )
+@require_POST
+def post_comment(request, post_id):
+    try:
+        post = post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        raise Http404("No Page Found")
+    comment=None
+    #A comment was posted
+    form=CommentForm(data=require_POST)
+    if form.is_valid():
+        #create a comment object
+        comment=form.save(commit=False)
+        #Assign the post to the comment
+        comment.post=post
+        #save the comment in the database
+        comment.save()
+        return render(
+            request,
+            'blog/post/comment.html',
+            {
+                'post':post,
+                'form':form,
+                'comment':comment
+            }
+        )
