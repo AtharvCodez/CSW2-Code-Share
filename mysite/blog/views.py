@@ -5,10 +5,19 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
 
 
-def post_list(request):
+def post_list(request, tag_slug=None):
     all_posts = Post.objects.all()
+    tag=None
+    if tag_slug:
+        try:
+            tag=Tag.objects.get(slug=tag)
+        except Tag.DoesNotExist:
+            raise Http404("No Tag Found")
+        all_posts=all_posts.filter(tags__in=[tag])
+
     paginator = Paginator(all_posts, 3)
 
     page_number = request.GET.get('page', 1)
@@ -20,7 +29,9 @@ def post_list(request):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
 
-    return render(request, 'blog/post/list.html', {'posts': posts})
+    return render(request, 'blog/post/list.html',
+                   {'posts': posts,
+                    tag:tag})
 
 
 def post_detail(request, id):
@@ -34,20 +45,32 @@ def post_detail(request, id):
 
 
 def post_detail_by_datewithslug(request, year, month, day, post):
-    post = get_object_or_404(
-        Post,
-        slug=post,
-        publish__year=year,
-        publish__month=month,
-        publish__day=day
-    )
+    try:
+        post = get_object_or_404(
+            Post,
+            slug=post,
+            publish__year=year,
+            publish__month=month,
+            publish__day=day
+        )
+    except Exception:
+        post = None
+
+    # list of active comments for this post
+    comments = post.comments.filter(active=True) if post else []
+    
+    # form for users to comment
+    form = CommentForm()
 
     return render(
         request,
         'blog/post/detail.html',
-        {'post': post}
+        {
+            'post': post,
+            'comments': comments,
+            'form': form,
+        }
     )
-
 
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -89,25 +112,31 @@ def post_share(request, post_id):
 @require_POST
 def post_comment(request, post_id):
     try:
-        post = post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
         raise Http404("No Page Found")
-    comment=None
-    #A comment was posted
-    form=CommentForm(data=require_POST)
+
+    comment = None
+
+    # A comment was posted
+    form = CommentForm(data=request.POST)
+
     if form.is_valid():
-        #create a comment object
-        comment=form.save(commit=False)
-        #Assign the post to the comment
-        comment.post=post
-        #save the comment in the database
+        # create a comment object
+        comment = form.save(commit=False)
+
+        # Assign the post to the comment
+        comment.post = post
+
+        # save the comment in the database
         comment.save()
+
         return render(
             request,
             'blog/post/comment.html',
             {
-                'post':post,
-                'form':form,
-                'comment':comment
+                'post': post,
+                'form': form,
+                'comment': comment
             }
         )

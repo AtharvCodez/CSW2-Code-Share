@@ -1,40 +1,58 @@
-# Python cache
+# -------------------------------
+# Python cache files
+# -------------------------------
 __pycache__/
-*.py[cod]
+*.py[cod]          # covers .pyc, .pyo, .pyd (REMOVED duplicate *.pyc)
 *$py.class
 
+# -------------------------------
 # Virtual environment
+# -------------------------------
 env/
 venv/
 .venv/
 
-# Environment variables
+# -------------------------------
+# Environment variables (secrets)
+# -------------------------------
 .env
 
-# Django stuff
-db.sqlite3
+# -------------------------------
+# Django specific
+# -------------------------------
+db.sqlite3         # local database (don’t push)
 *.log
 
-# Static files (optional)
-staticfiles/
+# -------------------------------
+# Static files (only if using collectstatic)
+# -------------------------------
+staticfiles/       # used when STATIC_ROOT is set
 
-# Media uploads
+# -------------------------------
+# Media uploads (user content)
+# -------------------------------
 media/
 
-# VS Code
+# -------------------------------
+# IDE / Editor files
+# -------------------------------
 .vscode/
+.idea/             # ✅ ADDED (for PyCharm users)
 
-# OS files
+# -------------------------------
+# OS junk files
+# -------------------------------
 .DS_Store
 Thumbs.db
 
-# Python build files
+# -------------------------------
+# Python build / packaging files
+# -------------------------------
 build/
 dist/
 *.egg-info/
 
-# Migrations cache
-*.pyc
-
-# Jupyter notebook checkpoints
+# -------------------------------
+# Jupyter notebooks
+# -------------------------------
 .ipynb_checkpoints/

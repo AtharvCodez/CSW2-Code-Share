@@ -3,6 +3,8 @@ body{
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
+    background-image: url("images/zoro dark theme.jpg");
+    color: yellow;
 }
 a{
     color: #00abff;
@@ -26,8 +28,11 @@ h2{
     float: right;
     width: 30%;
     padding: 10px;
-    background: #efefef;
+    background: rgba(0, 0, 0, 0.32);
     height: 100%;
+    color: aqua;
+    font-weight: bolder;
+
 }
 p.date{
     color: #ccc;
@@ -38,4 +43,36 @@ p.date{
 .pagination{
     margin: 40px 0;
     font-weight: bold;
+}
+
+.comment {
+    background: #00000059; /* SAME as sidebar */
+    border: 1px solid #00000061;
+    padding: 15px;
+    margin-bottom: 15px;
+    /* border-radius: 8px; */
+}
+
+.comment .info {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: orange;
+}
+
+.sub_1 input[type="submit"] {
+    background-color: red;
+    color: yellow;
+    border: none;
+    border-radius: 2px;
+    padding: 10px 20px;
+    cursor: pointer;
 }
