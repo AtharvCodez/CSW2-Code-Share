@@ -10,7 +10,7 @@ body{
     color: yellow;
 }
 a{
-    color: #00abff;
+    color: aqua;
     text-decoration: none;
 }
 h1{
@@ -33,7 +33,7 @@ h2{
     padding: 10px;
     background: rgba(0, 0, 0, 0.32);
     height: 100%;
-    color: aqua;
+    color: yellow;
     font-weight: bolder;
 
 }

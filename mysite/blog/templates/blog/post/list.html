@@ -1,5 +1,5 @@
-{% extends 'blog/base.html' %}
-
+{% extends 'blog/base.html' %} 
+{% load blog_tags %}
 {% block title %}My Blog{% endblock %}
 
 {% block content %}
@@ -29,7 +29,7 @@
     Published {{ post.publish|date:"M. d, Y, P" }} by {{ post.author }}
 </p>
 
-<p>{{ post.body|truncatewords:30|linebreaks }}</p>
+<p>{{ post.body|markdown | truncatewords_html:32}}</p>
 {% endfor %}
 <div class="add-post-container">
     <a href="{% url 'blog:post_create' %}" class="add-post-btn">
